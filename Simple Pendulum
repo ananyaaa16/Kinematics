@@ -1,0 +1,41 @@
+!simple pendulum
+!setting pendulum original position at theta0 with no intial speed
+!-------------------------------------------------------------------------------------
+program spendulum
+ implicit none
+ !-------------------------------------------------------------------------------------
+ !declaration of variables
+real :: l,x,y,vx,vy,t,t0,tf,dt
+real :: theta,theta0,dtheta_dt,omega
+real, parameter :: PI=3.1415927, g= 9.81
+!--------------------------------------------------------------------------------------
+!Ask user for input
+print *, 'enter L: ' 
+read *,l
+print *, 'enter theta0: '
+read *,theta0
+print *, 'enter t0,tf,dt: '
+read *,t0,tf,dt
+print *, 'l = ',l, 'theta0 = ',theta0
+print *, 't0= ',t0, 'tf= ',tf, 'dt = ',dt
+!--------------------------------------------------------------------------------------
+!initalize
+omega = sqrt(g/1)
+print *, 'omega= ', omega, 'T= ', 2.0*PI/omega
+open (unit=11,file='spendulum.dat')
+!--------------------------------------------------------------------------------------
+!compute:
+t = t0
+do while (t .le. tf)
+ theta = theta0*cos(omega*(t-t0))
+ dtheta_dt = -omega*theta0*sin(omega*(t-t0))
+ x = l*sin(theta)
+ y = -1*cos(theta)
+ vx = l*dtheta_dt*cos(theta)
+ vy = l*dtheta_dt*sin(theta)
+ write(11,100)t,x,y,vx,vy,theta,dtheta_dt
+ t= t+dt
+ enddo
+close(11)
+100 FORMAT(7G15.7)
+end program spendulum
