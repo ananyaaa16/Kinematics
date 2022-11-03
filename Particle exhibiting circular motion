@@ -1,0 +1,45 @@
+!File circularmotion.f90&
+!circular morion with Constant angular velocity 
+!setting (x0,y0) as center of cirlce, radius is R and omega is the angular velocity
+!------------------------------------------------------------------------------------
+
+program circularmotion
+ implicit none
+ 
+ !Declaration of variable:
+ real :: x0,y0,R,x,y,vx,vy,t,t0,tf,dt
+ real :: theta, omega
+ real, parameter :: PI=3.1415927
+ !------------------------------------------------------------------------------------
+ !asking user fir input
+ print *, '1. Enter omega (const.): '
+ read *,omega
+ print *, 'enter center of circle (x0,y0): '
+ read *,x0 ,y0
+ print *, 'enter a radius: '
+ read *,R
+ print *, 'enter t0,tf,df: '
+ read *,t0,tf,dt
+ print *, '1. omega = ' ,omega
+ print *, '2. x0 = ',x0, ' 3. y0 = ' ,y0, ' 4. R= ' ,R
+ print *, '5. t0 = ',t0, ' 6. tf = ' ,tf, ' 7. df= ' ,dt
+ !-------------------------------------------------------------------------------------
+ !initialize 
+ if(R .le. 0.0) stop
+ if(omega .le. 0.0) stop
+ print *, 'T = ', 2.0*PI/omega
+ open(unit=11,file='circle.dat')
+ !-------------------------------------------------------------------------------------
+ !computing
+ t = t0
+ do while(t .le. tf)
+  theta = omega * (t-t0)
+  x = x0+R*cos(theta)
+  y = y0+R*sin(theta)
+  vx = -omega*R*sin(theta)
+  vy = omega*R*cos(theta)
+  write(11,*)t,x,y,vx,vy
+  t = t+dt
+ enddo
+ close(11)
+ end program circularmotion
